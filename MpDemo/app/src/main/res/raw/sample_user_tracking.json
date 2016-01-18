@@ -1,0 +1,17 @@
+[
+  {"id":1,"email":"user_1@gmail.com", "latitude":"18.9927" , "longitude":"72.8311", "createdDate":"456789"},
+  {"id":2,"email":"user_1@gmail.com", "latitude":"18.9927" , "longitude":"72.8311", "createdDate":"456789"},
+  {"id":3,"email":"user_1@gmail.com", "latitude":"19.021324" , "longitude":"72.8424178", "createdDate":"456789"},
+  {"id":4,"email":"user_1@gmail.com", "latitude":"19.021324" , "longitude":"72.8424178", "createdDate":"456789"},
+
+  {"id":5,"email":"user_2@gmail.com", "latitude":"18.9927" , "longitude":"72.8311", "createdDate":"456789"},
+  {"id":6,"email":"user_2@gmail.com", "latitude":"18.9927" , "longitude":"72.8311", "createdDate":"456789"},
+  {"id":7,"email":"user_2@gmail.com", "latitude":"19.021324" , "longitude":"72.8424178", "createdDate":"456789"},
+  {"id":8,"email":"user_2@gmail.com", "latitude":"19.021324" , "longitude":"72.8424178", "createdDate":"456789"},
+
+  {"id":9,"email":"user_3@gmail.com", "latitude":"18.9927" , "longitude":"72.8311", "createdDate":"456789"},
+  {"id":10,"email":"user_3@gmail.com", "latitude":"18.9927" , "longitude":"72.8311", "createdDate":"456789"},
+  {"id":11,"email":"user_3@gmail.com", "latitude":"19.021324" , "longitude":"72.8424178", "createdDate":"456789"},
+  {"id":12,"email":"user_3@gmail.com", "latitude":"19.021324" , "longitude":"72.8424178", "createdDate":"456789"}
+
+]
