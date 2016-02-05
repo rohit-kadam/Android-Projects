@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +17,12 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.demo2.R;
 import com.demo2.adapters.CategoryAdapter;
+import com.demo2.base.BaseApplication;
 import com.demo2.models.Category;
 import com.demo2.utils.AppConstants;
 import com.demo2.utils.AppHelpers;
@@ -40,6 +45,7 @@ public class CategoryFragment extends Fragment {
     private List<Category> categories;
     private View rootView;
     private CategoryAdapter categoryAdapter;
+    private static String ORDER_BY = "DESC";
 
     /**
      * receiver to sort product listing
@@ -50,10 +56,8 @@ public class CategoryFragment extends Fragment {
             if (intent.getExtras() != null) {
                 Bundle bundle = intent.getExtras();
                 Toast.makeText(getActivity(), "Scheme last data ("+bundle.getString("orderBy")+")", Toast.LENGTH_LONG).show();
-                categories = Category.getAll(bundle.getString("orderBy"));
-                categoryAdapter = new CategoryAdapter(getActivity(), categories);
-                listingCategory = (ListView) rootView.findViewById(R.id.listingCategory);
-                listingCategory.setAdapter(categoryAdapter);
+                ORDER_BY = bundle.getString("orderBy");
+                showData();
             }
         }
     };
@@ -98,55 +102,14 @@ public class CategoryFragment extends Fragment {
     }
 
     /**
-     * load data in background
+     * load data from db
      */
-    private void loadDataInBackground() {
+    private void showData() {
         new AsyncTask<String,Void,String>(){
             @Override
             protected String doInBackground(String... params) {
-                String hasAppOpenedFirstTime =
-                        PreferenceManager.getStringFromPreferences(getActivity(),
-                                                            "yes", AppConstants.HAS_APP_OPENED_FIRST_TIME);
-
-                if (hasAppOpenedFirstTime.equals("yes")) {
-                    //update PreferenceManager
-                    PreferenceManager.putStringInPreferences(getActivity(), "no", AppConstants.HAS_APP_OPENED_FIRST_TIME);
-
-                    //load sample data from raw folder
-                    try {
-                        String sampleData = AppHelpers.getSampleData(getActivity());
-                        JSONObject jsonObjectSampleData = new JSONObject(sampleData);
-
-                        //parse data
-                        JSONObject jsonObjectSampleDataResponse = new JSONObject(jsonObjectSampleData.getString("data"));
-                        Iterator iteratorSampleData = jsonObjectSampleDataResponse.keys();
-                        while (iteratorSampleData.hasNext()) {
-                            String key = iteratorSampleData.next().toString();
-                            //record
-                            JSONObject record = new JSONObject(jsonObjectSampleDataResponse.getString(key));
-
-                            //and store it in db
-                            Category category = new Category();
-                            category.productId = record.getString("product-id");
-                            category.brand = record.getString("brand");
-                            category.molecule = record.getString("molecule");
-                            category.mrp = record.getString("mrp");
-                            category.margin = record.getString("margin");
-                            category.manufacturer = record.getString("manufacturer");
-                            category.scheme = record.getString("scheme");
-                            category.orderQuantity = record.getString("order-quantity");
-                            category.schemeLastDate = record.getString("scheme-last-date");
-                            //save category
-                            category.save();
-                        }
-                    }
-                    catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
                 //load data from db
-                categories = Category.getAll("DESC");
+                categories = Category.getAll(ORDER_BY);
 
                 return null;
             }
@@ -162,5 +125,78 @@ public class CategoryFragment extends Fragment {
                 }
             }
         }.execute();
+    }
+
+    /**
+     * load data in background
+     */
+    private void loadDataInBackground() {
+
+        String hasAppOpenedFirstTime =
+                        PreferenceManager.getStringFromPreferences(getActivity(),
+                                "yes", AppConstants.HAS_APP_OPENED_FIRST_TIME);
+
+        if (hasAppOpenedFirstTime.equals("yes")) {
+            if (!AppHelpers.isNetworkConnected(getActivity())) {
+                Toast.makeText(getActivity(), "Please check your internet connection", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                JsonObjectRequest request = new JsonObjectRequest(AppConstants.DATA_SOURCE_URL, null,
+                        new Response.Listener<JSONObject>() {
+
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                //load sample data from raw folder
+                                try {
+                                    if (response.getString("status").equals("ok")) {
+                                        //parse data
+                                        JSONObject jsonObjectSampleDataResponse = new JSONObject(response.getString("data"));
+                                        Iterator iteratorSampleData = jsonObjectSampleDataResponse.keys();
+                                        while (iteratorSampleData.hasNext()) {
+                                            String key = iteratorSampleData.next().toString();
+                                            //record
+                                            JSONObject record = new JSONObject(jsonObjectSampleDataResponse.getString(key));
+
+                                            //and store it in db
+                                            Category category = new Category();
+                                            category.productId = record.getString("product-id");
+                                            category.brand = record.getString("brand");
+                                            category.molecule = record.getString("molecule");
+                                            category.mrp = record.getString("mrp");
+                                            category.margin = record.getString("margin");
+                                            category.manufacturer = record.getString("manufacturer");
+                                            category.scheme = record.getString("scheme");
+                                            category.orderQuantity = record.getString("order-quantity");
+                                            category.schemeLastDate = record.getString("scheme-last-date");
+                                            //save category
+                                            category.save();
+                                        }
+
+                                        PreferenceManager.putStringInPreferences(getActivity(),
+                                                "no", AppConstants.HAS_APP_OPENED_FIRST_TIME);
+
+                                        showData();
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        },
+
+                        new Response.ErrorListener() {
+
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d(TAG, "response toString " + error.getMessage());
+                                error.printStackTrace();
+                            }
+                        }
+                );
+                BaseApplication.getInstance().getRequestQueue().add(request);
+            }
+        }
+        else {
+            showData();
+        }
     }
 }

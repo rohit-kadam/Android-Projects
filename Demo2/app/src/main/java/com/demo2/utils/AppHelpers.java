@@ -1,6 +1,7 @@
 package com.demo2.utils;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,5 +28,10 @@ public class AppHelpers {
         catch (IOException ex) {
         }
         return null;
+    }
+
+    public static boolean isNetworkConnected(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null;
     }
 }
