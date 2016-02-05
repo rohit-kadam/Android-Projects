@@ -1,0 +1,109 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="4dp">
+        <TextView
+            android:id="@+id/txtBrandLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Brand:"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/txtBrand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="2dp"
+            android:text=""/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="4dp">
+        <TextView
+            android:id="@+id/txtManufacturerLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Manufacturer:"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/txtManufacturer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="2dp"
+            android:text=""/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="4dp">
+        <TextView
+            android:id="@+id/txtMrpLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MRP:"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/txtMrp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="2dp"
+            android:text=""/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="4dp">
+        <TextView
+            android:id="@+id/txtSchemeLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Scheme:"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/txtScheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="2dp"
+            android:text=""/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="4dp">
+        <TextView
+            android:id="@+id/txtSchemeLastDateLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="2dp"
+            android:text="Scheme Last Date:"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/txtSchemeLastDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="2dp"
+            android:text=""/>
+    </LinearLayout>
+
+</LinearLayout>
