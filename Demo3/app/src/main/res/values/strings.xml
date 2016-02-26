@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Words</string>
+    <string name="sync_account_type">com.demo3</string>
+    <string name="content_authority">com.demo3.content</string>
+</resources>
